@@ -13,5 +13,12 @@ namespace adowpf
     /// </summary>
     public partial class App : Application
     {
+
+        public App()
+        {
+            string connectionString = @"server=(localdb)\MSSQLLocalDB;database=Bieren;integrated security=true";
+            Application.Current.Properties["Bieren2"] = connectionString;
+        }
+        
     }
 }

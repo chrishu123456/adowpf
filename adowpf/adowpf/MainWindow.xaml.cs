@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.Configuration;
+using System.Data.Common;
 
 namespace adowpf
 {
@@ -24,6 +26,26 @@ namespace adowpf
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ButtonBieren_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var conString = ConfigurationManager.ConnectionStrings["Bieren"];
+                var factory = DbProviderFactories.GetFactory(conString.ProviderName);
+
+                using (var conBieren = factory.CreateConnection())
+                {
+                    conBieren.ConnectionString = conString.ConnectionString;
+                    conBieren.Open();
+                    labelStatus.Content = "Bieren geopend";
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Content = ex.Message;
+            }
         }
     }
 }
