@@ -12,5 +12,7 @@
                 Width="100" Margin="214,59,0,0" Click="ButtonBieren_Click" />
         <Label x:Name="labelStatus" Content="leeg maken"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,154,0,0" />
+        <Button x:Name="ButtonBank" Content="Bank openen" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,59,10,0" Click="ButtonBank_Click"></Button>
+        <Label x:Name="BankStatus" Content="leeg maken" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,154,10,0"></Label>
     </Grid>
 </Window>

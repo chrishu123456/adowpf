@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data.Common;
+using AdoGemeenschap;
 
 namespace adowpf
 {
@@ -32,12 +33,10 @@ namespace adowpf
         {
             try
             {
-                var conString = ConfigurationManager.ConnectionStrings["Bieren"];
-                var factory = DbProviderFactories.GetFactory(conString.ProviderName);
+                var manager = new BierenDbManager();
 
-                using (var conBieren = factory.CreateConnection())
+                using (var conBieren = manager.GetConnection())
                 {
-                    conBieren.ConnectionString = conString.ConnectionString;
                     conBieren.Open();
                     labelStatus.Content = "Bieren geopend";
                 }
@@ -45,6 +44,24 @@ namespace adowpf
             catch (Exception ex)
             {
                 labelStatus.Content = ex.Message;
+            }
+        }
+
+        private void ButtonBank_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var manager = new BankDbManager();
+
+                using (var conBank = manager.GetConnection())
+                {
+                    conBank.Open();
+                    BankStatus.Content = "Bank geopend";
+                }
+            }
+            catch (Exception ex)
+            {
+                BankStatus.Content = ex.Message;
             }
         }
     }
