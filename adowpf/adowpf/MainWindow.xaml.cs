@@ -79,5 +79,35 @@ namespace adowpf
                 MessageBox.Show("Fout" + ex.Message, "Fout", MessageBoxButton.OK);
             }
         }
+
+        private void ButtonStorten_Click(object sender, RoutedEventArgs e)
+        {
+            decimal TeStorten;
+
+            if (decimal.TryParse(TextBoxTeStorten.Text, out TeStorten))
+            {
+                try
+                {
+                    var manager = new RekeningenManager();
+                    if (manager.Storten(TeStorten, TextBoxRekeningNr.Text))
+                    {
+                        labelStatus.Content = "OK";
+                    }
+                    else
+                    {
+                        labelStatus.Content = "Rekening niet gevonden.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    labelStatus.Content = ex.Message;
+
+                }
+            }
+            else
+            {
+                labelStatus.Content = "Geen getal ingetikt.";
+            }
+        }
     }
 }

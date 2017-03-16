@@ -10,11 +10,17 @@
         <Button x:Name="ButtonBieren" Content="Bieren openen"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
                 Width="100" Margin="214,59,0,0" Click="ButtonBieren_Click" />
-        <Label x:Name="labelStatus" Content="leeg maken"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,154,0,0" />
+        <Label x:Name="labelStatus" Content="leeg maken" Width="250"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,194,0,0" />
         <Button x:Name="ButtonBank" Content="Bank openen" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,59,10,0" Click="ButtonBank_Click"></Button>
         <Label x:Name="BankStatus" Content="leeg maken" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,154,10,0"></Label>
         <Button x:Name="ButtonSaldoVerhogen" Content="Saldo rekeningen met 10% verhogen." HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Click="ButtonSaldoVerhogen_Click"></Button>
         <Label x:Name="RekeningenVerhoogdSaldo" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="0,100,0,0"></Label>
+        <Label x:Name="RekeningNummer" Content="RekeningNr :" HorizontalAlignment="Left" VerticalAlignment="Center"></Label>
+        <TextBox x:Name="TextBoxRekeningNr"    HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0" Width="100" ></TextBox>
+        <Label x:Name="StortBedrag" Content="StortBedrag : " HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,40,0,0"></Label>
+        <TextBox x:Name="TextBoxTeStorten" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,40,0,0" Width="100"></TextBox>
+        <Button x:Name="ButtonStorten" Content="Storten" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,120,0,0" Width="100" Click="ButtonStorten_Click"></Button>
+
     </Grid>
 </Window>

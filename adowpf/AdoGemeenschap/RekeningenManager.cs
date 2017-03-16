@@ -33,5 +33,37 @@ namespace AdoGemeenschap
                 return 0;
             }
         }
+
+        public Boolean Storten(decimal TeStortenBedrag, string RekeningNrWaaropWordtGestort)
+        {
+
+                var BankDb = new BankDbManager();
+
+                using (var BankDbCon = BankDb.GetConnection())
+                {
+
+                    using (var BankDbCommand = BankDbCon.CreateCommand())
+                    {
+                    BankDbCommand.CommandType = System.Data.CommandType.Text;
+                    BankDbCommand.CommandText = "update Rekeningen set Saldo=Saldo+@teStorten where RekeningNr=@RekeningNr";
+
+                    var BankDbTeStortenParameter = BankDbCommand.CreateParameter();
+                    BankDbTeStortenParameter.ParameterName = "@teStorten";
+                    BankDbTeStortenParameter.Value = TeStortenBedrag;
+                    BankDbCommand.Parameters.Add(BankDbTeStortenParameter);
+
+
+                    var BankDbRekeningNrParameter = BankDbCommand.CreateParameter();
+                    BankDbRekeningNrParameter.ParameterName = "@RekeningNr";
+                    BankDbRekeningNrParameter.Value = RekeningNrWaaropWordtGestort;
+                    BankDbCommand.Parameters.Add(BankDbRekeningNrParameter);
+
+                    BankDbCon.Open();
+                    return BankDbCommand.ExecuteNonQuery() != 0;
+                }
+                }
+
+            
+        }
     }
 }
