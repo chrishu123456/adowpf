@@ -64,5 +64,20 @@ namespace adowpf
                 BankStatus.Content = ex.Message;
             }
         }
+
+
+        private void ButtonSaldoVerhogen_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var rekeningen = new RekeningenManager();
+                RekeningenVerhoogdSaldo.Content = "Aantal : " + rekeningen.SaldoBonus();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fout" + ex.Message, "Fout", MessageBoxButton.OK);
+            }
+        }
     }
 }

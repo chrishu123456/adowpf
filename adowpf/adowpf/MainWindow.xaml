@@ -14,5 +14,7 @@
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,154,0,0" />
         <Button x:Name="ButtonBank" Content="Bank openen" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,59,10,0" Click="ButtonBank_Click"></Button>
         <Label x:Name="BankStatus" Content="leeg maken" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,154,10,0"></Label>
+        <Button x:Name="ButtonSaldoVerhogen" Content="Saldo rekeningen met 10% verhogen." HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Click="ButtonSaldoVerhogen_Click"></Button>
+        <Label x:Name="RekeningenVerhoogdSaldo" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="0,100,0,0"></Label>
     </Grid>
 </Window>
