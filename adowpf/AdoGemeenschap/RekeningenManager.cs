@@ -44,18 +44,20 @@ namespace AdoGemeenschap
 
                     using (var BankDbCommand = BankDbCon.CreateCommand())
                     {
-                    BankDbCommand.CommandType = System.Data.CommandType.Text;
-                    BankDbCommand.CommandText = "update Rekeningen set Saldo=Saldo+@teStorten where RekeningNr=@RekeningNr";
+                    BankDbCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    BankDbCommand.CommandText = "Storten";
 
                     var BankDbTeStortenParameter = BankDbCommand.CreateParameter();
                     BankDbTeStortenParameter.ParameterName = "@teStorten";
                     BankDbTeStortenParameter.Value = TeStortenBedrag;
+                    BankDbTeStortenParameter.DbType = System.Data.DbType.Currency;
                     BankDbCommand.Parameters.Add(BankDbTeStortenParameter);
 
 
                     var BankDbRekeningNrParameter = BankDbCommand.CreateParameter();
                     BankDbRekeningNrParameter.ParameterName = "@RekeningNr";
                     BankDbRekeningNrParameter.Value = RekeningNrWaaropWordtGestort;
+                    BankDbRekeningNrParameter.DbType = System.Data.DbType.String;
                     BankDbCommand.Parameters.Add(BankDbRekeningNrParameter);
 
                     BankDbCon.Open();
