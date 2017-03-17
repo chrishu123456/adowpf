@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,78 @@ namespace AdoGemeenschap
                 }
 
             
+        }
+
+        public Boolean Overschrijven(decimal bedrag, string vanRekening, string naarRekening)
+        {
+            var BankDb = new BankDbManager();
+
+            using (var BankDbConnection = BankDb.GetConnection())
+            {
+                BankDbConnection.Open();
+
+                using (var BankDbTransaction = BankDbConnection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+                {
+                    using (var BankDbAftrekkenCommand = BankDbConnection.CreateCommand())
+                    {
+                        BankDbAftrekkenCommand.Transaction = BankDbTransaction;
+
+                        BankDbAftrekkenCommand.CommandType = System.Data.CommandType.Text;
+                        BankDbAftrekkenCommand.CommandText = "update Rekeningen set Saldo=Saldo - @Bedrag where RekeningNr=@vanRekeningNr";
+
+                        DbParameter ParAftrekkenBedrag = BankDbAftrekkenCommand.CreateParameter();
+                        ParAftrekkenBedrag.ParameterName = "@Bedrag";
+                        ParAftrekkenBedrag.Value = bedrag;
+                        ParAftrekkenBedrag.DbType = System.Data.DbType.Decimal;
+                        BankDbAftrekkenCommand.Parameters.Add(ParAftrekkenBedrag);
+
+                        DbParameter ParAftrekkenvanRekeningNr = BankDbAftrekkenCommand.CreateParameter();
+                        ParAftrekkenvanRekeningNr.ParameterName = "@vanRekeningNr";
+                        ParAftrekkenvanRekeningNr.Value = vanRekening;
+                        ParAftrekkenvanRekeningNr.DbType = System.Data.DbType.String;
+                        BankDbAftrekkenCommand.Parameters.Add(ParAftrekkenvanRekeningNr);
+
+                        
+                        if (BankDbAftrekkenCommand.ExecuteNonQuery() == 0)
+                        {
+                            //iets misgegaan
+                            BankDbTransaction.Rollback();
+                            throw new Exception("Iets misgegaan bij het van de rekening afhalen van het geld.");
+                        }
+                    }
+
+                    using (var BankDbStortenCommand = BankDbConnection.CreateCommand())
+                    {
+                        BankDbStortenCommand.Transaction = BankDbTransaction;
+
+                        BankDbStortenCommand.CommandType = System.Data.CommandType.Text;
+                        BankDbStortenCommand.CommandText = "update Rekeningen set Saldo=Saldo+@Bedrag where RekeningNr=@naarRekeningNr";
+
+                        DbParameter ParStortenBedrag = BankDbStortenCommand.CreateParameter();
+                        ParStortenBedrag.ParameterName = "@Bedrag";
+                        ParStortenBedrag.Value = bedrag;
+                        ParStortenBedrag.DbType = System.Data.DbType.Decimal;
+                        BankDbStortenCommand.Parameters.Add(ParStortenBedrag);
+
+                        DbParameter ParStortennaarRekeningNr = BankDbStortenCommand.CreateParameter();
+                        ParStortennaarRekeningNr.ParameterName = "@naarRekeningNr";
+                        ParStortennaarRekeningNr.Value = naarRekening;
+                        ParStortennaarRekeningNr.DbType = System.Data.DbType.String;
+                        BankDbStortenCommand.Parameters.Add(ParStortennaarRekeningNr);
+
+                        if (BankDbStortenCommand.ExecuteNonQuery() == 0)
+                        {
+                            BankDbTransaction.Rollback();
+                            throw new Exception("Iets misgegaan bij het naar de rekening schrijven van het geld.");
+                        }
+                    }
+
+                    
+
+                    BankDbTransaction.Commit();
+                    return true;
+                }
+            }
         }
     }
 }
