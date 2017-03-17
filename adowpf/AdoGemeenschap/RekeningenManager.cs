@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows;
 
 namespace AdoGemeenschap
@@ -38,13 +39,13 @@ namespace AdoGemeenschap
         public Boolean Storten(decimal TeStortenBedrag, string RekeningNrWaaropWordtGestort)
         {
 
-                var BankDb = new BankDbManager();
+            var BankDb = new BankDbManager();
 
-                using (var BankDbCon = BankDb.GetConnection())
+            using (var BankDbCon = BankDb.GetConnection())
+            {
+
+                using (var BankDbCommand = BankDbCon.CreateCommand())
                 {
-
-                    using (var BankDbCommand = BankDbCon.CreateCommand())
-                    {
                     BankDbCommand.CommandType = System.Data.CommandType.StoredProcedure;
                     BankDbCommand.CommandText = "Storten";
 
@@ -64,24 +65,26 @@ namespace AdoGemeenschap
                     BankDbCon.Open();
                     return BankDbCommand.ExecuteNonQuery() != 0;
                 }
-                }
+            }
 
-            
+
         }
 
         public Boolean Overschrijven(decimal bedrag, string vanRekening, string naarRekening)
         {
             var BankDb = new BankDbManager();
+            var Bank2Db = new Bank2DbManager();
 
-            using (var BankDbConnection = BankDb.GetConnection())
+            var opties = new TransactionOptions();
+
+            opties.IsolationLevel = IsolationLevel.ReadCommitted;
+
+            using (var traOverschrijven = new TransactionScope(TransactionScopeOption.Required, opties))
             {
-                BankDbConnection.Open();
-
-                using (var BankDbTransaction = BankDbConnection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+                using (var BankDbConnection = BankDb.GetConnection())
                 {
                     using (var BankDbAftrekkenCommand = BankDbConnection.CreateCommand())
                     {
-                        BankDbAftrekkenCommand.Transaction = BankDbTransaction;
 
                         BankDbAftrekkenCommand.CommandType = System.Data.CommandType.Text;
                         BankDbAftrekkenCommand.CommandText = "update Rekeningen set Saldo=Saldo - @Bedrag where RekeningNr=@vanRekeningNr";
@@ -98,47 +101,47 @@ namespace AdoGemeenschap
                         ParAftrekkenvanRekeningNr.DbType = System.Data.DbType.String;
                         BankDbAftrekkenCommand.Parameters.Add(ParAftrekkenvanRekeningNr);
 
-                        
+                        BankDbConnection.Open();
+
                         if (BankDbAftrekkenCommand.ExecuteNonQuery() == 0)
                         {
-                            //iets misgegaan
-                            BankDbTransaction.Rollback();
                             throw new Exception("Iets misgegaan bij het van de rekening afhalen van het geld.");
                         }
                     }
 
-                    using (var BankDbStortenCommand = BankDbConnection.CreateCommand())
+                }
+                using (var Bank2DbConnection = Bank2Db.GetConnection())
+                {
+                    using (var Bank2DbStortenCommand = Bank2DbConnection.CreateCommand())
                     {
-                        BankDbStortenCommand.Transaction = BankDbTransaction;
 
-                        BankDbStortenCommand.CommandType = System.Data.CommandType.Text;
-                        BankDbStortenCommand.CommandText = "update Rekeningen set Saldo=Saldo+@Bedrag where RekeningNr=@naarRekeningNr";
+                        Bank2DbStortenCommand.CommandType = System.Data.CommandType.Text;
+                        Bank2DbStortenCommand.CommandText = "update Rekeningen set Saldo=Saldo+@Bedrag where RekeningNr=@naarRekeningNr";
 
-                        DbParameter ParStortenBedrag = BankDbStortenCommand.CreateParameter();
+                        DbParameter ParStortenBedrag = Bank2DbStortenCommand.CreateParameter();
                         ParStortenBedrag.ParameterName = "@Bedrag";
                         ParStortenBedrag.Value = bedrag;
                         ParStortenBedrag.DbType = System.Data.DbType.Decimal;
-                        BankDbStortenCommand.Parameters.Add(ParStortenBedrag);
+                        Bank2DbStortenCommand.Parameters.Add(ParStortenBedrag);
 
-                        DbParameter ParStortennaarRekeningNr = BankDbStortenCommand.CreateParameter();
+                        DbParameter ParStortennaarRekeningNr = Bank2DbStortenCommand.CreateParameter();
                         ParStortennaarRekeningNr.ParameterName = "@naarRekeningNr";
                         ParStortennaarRekeningNr.Value = naarRekening;
                         ParStortennaarRekeningNr.DbType = System.Data.DbType.String;
-                        BankDbStortenCommand.Parameters.Add(ParStortennaarRekeningNr);
+                        Bank2DbStortenCommand.Parameters.Add(ParStortennaarRekeningNr);
 
-                        if (BankDbStortenCommand.ExecuteNonQuery() == 0)
+                        Bank2DbConnection.Open();
+                        if (Bank2DbStortenCommand.ExecuteNonQuery() == 0)
                         {
-                            BankDbTransaction.Rollback();
                             throw new Exception("Iets misgegaan bij het naar de rekening schrijven van het geld.");
                         }
+                        traOverschrijven.Complete();
+                        return true;
                     }
-
-                    
-
-                    BankDbTransaction.Commit();
-                    return true;
                 }
+
             }
         }
+
     }
 }
