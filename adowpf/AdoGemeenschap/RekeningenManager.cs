@@ -204,7 +204,7 @@ namespace AdoGemeenschap
                     DbParameter ParRekeningInfoNaam = BankDbRekeningInfoCommand.CreateParameter();
                     ParRekeningInfoNaam.ParameterName = "@naam";
                     ParRekeningInfoNaam.Direction = System.Data.ParameterDirection.Output;
-                    ParRekeningInfoNaam.Size = 50;
+                    ParRekeningInfoNaam.Size = 14;
                     ParRekeningInfoRekeningNr.DbType = System.Data.DbType.String;
 
                     BankDbRekeningInfoCommand.Parameters.Add(ParRekeningInfoNaam);
