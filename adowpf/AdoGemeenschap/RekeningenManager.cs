@@ -176,5 +176,50 @@ namespace AdoGemeenschap
             }
         }
 
+        public RekeningInfo RekeningInfoRaadplegen(string rekeningnr)
+        {
+            BankDbManager BankDb = new BankDbManager();
+
+            using (var BankDbConnection = BankDb.GetConnection())
+            {
+                using (var BankDbRekeningInfoCommand = BankDbConnection.CreateCommand())
+                {
+                    BankDbRekeningInfoCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    BankDbRekeningInfoCommand.CommandText = "RekeningInfoRaadplegen";
+
+                    DbParameter ParRekeningInfoRekeningNr = BankDbRekeningInfoCommand.CreateParameter();
+                    ParRekeningInfoRekeningNr.ParameterName = "@rekeningnr";
+                    ParRekeningInfoRekeningNr.Value = rekeningnr;
+                    ParRekeningInfoRekeningNr.DbType = System.Data.DbType.String;
+
+                    BankDbRekeningInfoCommand.Parameters.Add(ParRekeningInfoRekeningNr);
+
+                    DbParameter ParRekeningInfoSaldo = BankDbRekeningInfoCommand.CreateParameter();
+                    ParRekeningInfoSaldo.ParameterName = "@saldo";
+                    ParRekeningInfoSaldo.Direction = System.Data.ParameterDirection.Output;
+                    ParRekeningInfoSaldo.DbType = System.Data.DbType.Currency;
+
+                    BankDbRekeningInfoCommand.Parameters.Add(ParRekeningInfoSaldo);
+
+                    DbParameter ParRekeningInfoNaam = BankDbRekeningInfoCommand.CreateParameter();
+                    ParRekeningInfoNaam.ParameterName = "@naam";
+                    ParRekeningInfoNaam.Direction = System.Data.ParameterDirection.Output;
+                    ParRekeningInfoNaam.Size = 50;
+                    ParRekeningInfoRekeningNr.DbType = System.Data.DbType.String;
+
+                    BankDbRekeningInfoCommand.Parameters.Add(ParRekeningInfoNaam);
+
+                    BankDbConnection.Open();
+
+                    BankDbRekeningInfoCommand.ExecuteNonQuery();
+                    if ( ParRekeningInfoSaldo.Value.Equals(DBNull.Value ))
+                    {
+                        throw new Exception("Iets misgegaan bij het weergegeven van de saldo en de naam van de betreffende rekening.");
+                    }
+                    else { return new RekeningInfo ( (Decimal)ParRekeningInfoSaldo.Value, (String)ParRekeningInfoNaam.Value);  }
+
+                }
+            }
+        }
     }
 }

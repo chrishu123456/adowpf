@@ -1,0 +1,17 @@
+﻿<Window x:Class="adowpf.RekeningInfoRaadplegen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:adowpf"
+        mc:Ignorable="d"
+        Title="RekeningInfoRaadplegen" Height="300" Width="700">
+    <Grid>
+        <Label x:Name="LabelRekeningNr" Content="Rekening Nr. : " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,500,200" Width="100"></Label>
+        <TextBox x:Name="TextBoxRekeningNr" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,0,400,200" Width="100"></TextBox>
+        <Button x:Name="ButtonInfo" Content="Info" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,0,400,100" Width="100" Click="ButtonInfo_Click"></Button>
+        <Label x:Name="LabelSaldo" Content="Saldo : " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,0,400,0" Width="100"></Label>
+        <Label x:Name="LabelNaam" Content="Naam : " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,100,400,0" Width="100"></Label>
+        <Label x:Name="LabelMeldingen" Content="No comment" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" Width="650"></Label>
+    </Grid>
+</Window>
