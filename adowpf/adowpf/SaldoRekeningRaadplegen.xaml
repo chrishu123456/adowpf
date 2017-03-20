@@ -1,0 +1,16 @@
+﻿<Window x:Class="adowpf.SaldoRekeningRaadplegen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:adowpf"
+        mc:Ignorable="d"
+        Title="SaldoRekeningRaadplegen" Height="300" Width="300">
+    <Grid>
+        <Label x:Name="LabelRekeningNr" Content="Rekening Nr : " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,100,200" Width="100"></Label>
+        <TextBox x:Name="TextBoxRekeningNr" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,0,0,200" Width="100"></TextBox>
+        <Button x:Name="ButtonSaldoRekeningRaadplegen" Content="Saldo" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="100,0,0,100" Width="100" Click="ButtonSaldoRekeningRaadplegen_Click"></Button>
+        <Label x:Name="LabelSaldoWeergeven" Content="Saldo : " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,100,50,0" Width="150" ></Label>
+        <Label x:Name="LabelMeldingen" Content="no comment" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" Width="250"></Label>
+    </Grid>
+</Window>

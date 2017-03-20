@@ -133,13 +133,46 @@ namespace AdoGemeenschap
                         Bank2DbConnection.Open();
                         if (Bank2DbStortenCommand.ExecuteNonQuery() == 0)
                         {
-                            throw new Exception("Iets misgegaan bij het naar de rekening schrijven van het geld.");
+                            throw new Exception("Iets misgegaan bij het naar de rekening overschrijven van het geld.");
                         }
                         traOverschrijven.Complete();
                         return true;
                     }
                 }
 
+            }
+        }
+
+        public decimal RekeningSaldo(string rekeningnr)
+        {
+            BankDbManager BankDb = new BankDbManager();
+
+            using (var BankDbConnection = BankDb.GetConnection())
+            {
+                using (var BankDbRekeningSaldoCommand = BankDbConnection.CreateCommand())
+                {
+                    BankDbRekeningSaldoCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    BankDbRekeningSaldoCommand.CommandText = "SaldoRekeningRaadplegen";
+
+                    DbParameter ParRekeningSaldoRekeningNr = BankDbRekeningSaldoCommand.CreateParameter();
+                    ParRekeningSaldoRekeningNr.ParameterName = "@rekeningNr";
+                    ParRekeningSaldoRekeningNr.Value = rekeningnr;
+                    ParRekeningSaldoRekeningNr.DbType = System.Data.DbType.String;
+                    BankDbRekeningSaldoCommand.Parameters.Add(ParRekeningSaldoRekeningNr);
+
+                    BankDbConnection.Open();
+                    Object resultaat = BankDbRekeningSaldoCommand.ExecuteScalar();
+
+                    if ( resultaat == null)
+                    {
+                        throw new Exception("Iets misgegaan bij het tonen van het saldo van de rekening.");
+                    }
+                    else
+                    {
+                        return (decimal)resultaat; 
+                    }
+
+                }
             }
         }
 
