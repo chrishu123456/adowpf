@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdoGemeenschap
 {
-    public class Brouwers
+    public class Brouwer
     {
         private int brouwernrValue;
 
@@ -56,12 +56,12 @@ namespace AdoGemeenschap
             set { omzetValue = value; }
         }
 
-        public Brouwers():this(0, null, null, 0, null, 0)
+        public Brouwer():this(0, null, null, 0, null, 0)
         {
 
         }
 
-        public Brouwers(int brouwernr, string brnaam, string adres, int postcode, string gemeente, decimal omzet)
+        public Brouwer(int brouwernr, string brnaam, string adres, int postcode, string gemeente, decimal omzet)
         {
             this.BrouwerNr = brouwernr;
             this.BrNaam = brnaam;
