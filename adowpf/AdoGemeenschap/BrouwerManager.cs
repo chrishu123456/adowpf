@@ -23,14 +23,24 @@ namespace AdoGemeenschap
                 {
 
                     BierDbCommand.CommandType = System.Data.CommandType.Text;
-                    BierDbCommand.CommandText = "select * from Brouwers where BrNaam like @beginletter + '%'";
 
-                    DbParameter ParBierDbBeginletters = BierDbCommand.CreateParameter();
-                    ParBierDbBeginletters.ParameterName = "@beginletters";
-                    ParBierDbBeginletters.Value = beginletters;
-                    ParBierDbBeginletters.DbType = System.Data.DbType.String;
+                    if (beginletters != string.Empty )
+                    { BierDbCommand.CommandText = "select * from Brouwers where BrNaam like @beginletters";
+                        DbParameter ParBierDbBeginletters = BierDbCommand.CreateParameter();
+                        ParBierDbBeginletters.ParameterName = "@beginletters";
+                        ParBierDbBeginletters.Value = beginletters + "%";
+                        ParBierDbBeginletters.DbType = System.Data.DbType.String;
 
-                    BierDbCommand.Parameters.Add(ParBierDbBeginletters);
+                        BierDbCommand.Parameters.Add(ParBierDbBeginletters);
+                    }
+                    else
+                    {
+
+                       BierDbCommand.CommandText = "select * from Brouwers";
+                    }
+                    
+
+                   
 
                     BierDbConnection.Open();
 
@@ -54,7 +64,7 @@ namespace AdoGemeenschap
                             else
                             {
                                 brouwers.Add(new Brouwer(reader.GetInt32(brouwernrpos), reader.GetString(brnaampos),
-                                  reader.GetString(adrespos), reader.GetInt32(postcodepos), reader.GetString(gemeentepos), reader.GetInt32(omzetpos)));
+                                  reader.GetString(adrespos), reader.GetInt16(postcodepos), reader.GetString(gemeentepos), reader.GetInt32(omzetpos)));
                             }
                         }
                             

@@ -8,9 +8,9 @@ namespace AdoGemeenschap
 {
     public class Brouwer
     {
-        private int brouwernrValue;
+        private Int32 brouwernrValue;
 
-        public int BrouwerNr
+        public Int32 BrouwerNr
         {
             get { return brouwernrValue; }
         }
@@ -31,9 +31,9 @@ namespace AdoGemeenschap
             set { adresValue = value; }
         }
 
-        private int postcodeValue;
+        private Int16 postcodeValue;
 
-        public int PostCode
+        public Int16 PostCode
         {
             get { return postcodeValue; }
             set { postcodeValue = value; }
@@ -60,7 +60,7 @@ namespace AdoGemeenschap
 
         }
 
-        public Brouwer(int brouwernr, string brnaam, string adres, int postcode, string gemeente, Int32? omzet)
+        public Brouwer(Int32 brouwernr, string brnaam, string adres, Int16 postcode, string gemeente, Int32? omzet)
         {
             this.brouwernrValue = brouwernr;
             this.BrNaam = brnaam;
