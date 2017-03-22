@@ -13,7 +13,6 @@ namespace AdoGemeenschap
         public int BrouwerNr
         {
             get { return brouwernrValue; }
-            set { brouwernrValue = value; }
         }
 
         private string brnaamValue;
@@ -48,9 +47,9 @@ namespace AdoGemeenschap
             set { gemeenteValue = value; }
         }
 
-        private decimal omzetValue;
+        private Int32? omzetValue;
 
-        public decimal Omzet
+        public Int32? Omzet
         {
             get { return omzetValue; }
             set { omzetValue = value; }
@@ -61,9 +60,9 @@ namespace AdoGemeenschap
 
         }
 
-        public Brouwer(int brouwernr, string brnaam, string adres, int postcode, string gemeente, decimal omzet)
+        public Brouwer(int brouwernr, string brnaam, string adres, int postcode, string gemeente, Int32? omzet)
         {
-            this.BrouwerNr = brouwernr;
+            this.brouwernrValue = brouwernr;
             this.BrNaam = brnaam;
             this.Adres = adres;
             this.PostCode = postcode;
