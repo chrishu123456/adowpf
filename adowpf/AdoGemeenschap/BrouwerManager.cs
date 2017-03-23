@@ -25,18 +25,22 @@ namespace AdoGemeenschap
                     BierDbCommand.CommandType = System.Data.CommandType.Text;
 
                     if (beginletters != string.Empty )
-                    { BierDbCommand.CommandText = "select * from Brouwers where BrNaam like @beginletters";
+                    {
+                        BierDbCommand.CommandText = "select * from Brouwers where BrNaam like @beginletters";
+
                         DbParameter ParBierDbBeginletters = BierDbCommand.CreateParameter();
                         ParBierDbBeginletters.ParameterName = "@beginletters";
                         ParBierDbBeginletters.Value = beginletters + "%";
                         ParBierDbBeginletters.DbType = System.Data.DbType.String;
 
                         BierDbCommand.Parameters.Add(ParBierDbBeginletters);
+
                     }
                     else
                     {
 
-                       BierDbCommand.CommandText = "select * from Brouwers";
+                       BierDbCommand.CommandText = "select * from Brouwers"; //omdat er geen parameter in deze select staat , 
+                                                                            // is er geen DbParameter nodig, en dus ook geen BierDbCommand.Parameters.Add van die parameter
                     }
                     
 
@@ -63,12 +67,15 @@ namespace AdoGemeenschap
                             }
                             else
                             {
-                                brouwers.Add(new Brouwer(reader.GetInt32(brouwernrpos), reader.GetString(brnaampos),
-                                  reader.GetString(adrespos), reader.GetInt16(postcodepos), reader.GetString(gemeentepos), reader.GetInt32(omzetpos)));
+                                omzet = reader.GetInt32(omzetpos); // om het ongedefinieerde van omzet te verwijderen , wanneer omzet in deze lus geraakt.
+                                
                             }
+                            brouwers.Add(new Brouwer(reader.GetInt32(brouwernrpos), reader.GetString(brnaampos),
+                                  reader.GetString(adrespos), reader.GetInt16(postcodepos), reader.GetString(gemeentepos), omzet));
+
                         }
-                            
-                        
+
+
                     }
 
 

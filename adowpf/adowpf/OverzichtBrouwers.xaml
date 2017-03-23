@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:adowpf"
         xmlns:AdoGemeenschap="clr-namespace:AdoGemeenschap;assembly=AdoGemeenschap" x:Class="adowpf.OverzichtBrouwers"
         mc:Ignorable="d"
-        Title="OverzichtBrouwers" SizeToContent="Width" Loaded="Window_Loaded">
+        Title="OverzichtBrouwers" Height="300" Width="300" Loaded="Window_Loaded">
 
     <Window.Resources>
         <CollectionViewSource x:Key="brouwerViewSource" d:DesignSource="{d:DesignInstance {x:Type AdoGemeenschap:Brouwer}, CreateList=True}"/>
@@ -21,7 +21,7 @@
                 <Button Content="&gt;&gt;|" Name="goToLastButton" Width="Auto" IsEnabled="False" FontWeight="Bold" Background="BlanchedAlmond" Click="goToLastButton_Click"></Button>
 
                 <TextBox Name="TextBoxGo" Width="37" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBox>
-                <Label Name="Labelvan" Height="28" Content="van " Width="30"></Label>
+                <Label Name="Labelvan"  Content="van " Height="28" Width="30"></Label>
                 <Label Name="LabelTotalRowCount" Height="28" Width="38"></Label>
 
                 <Button Name="Buttongo" Content="Go!" Width="Auto" Background="BlanchedAlmond" FontWeight="Bold" Click="Buttongo_Click"></Button>
@@ -31,8 +31,13 @@
 
                 <Button Content="Zoeken" HorizontalAlignment="Left" Name="ButtonZoeken" Width="Auto" Background="BlanchedAlmond" FontWeight="Bold" Click="ButtonZoeken_Click"></Button>
             </StackPanel>
+         </Border>
+        <Border DockPanel.Dock="Bottom" DataContext="{StaticResource brouwerViewSource}" Background="SkyBlue" BorderThickness="1" BorderBrush="Black" Height="120" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="4" Height="120">
+                <ListBox Name="ListBoxBrouwers" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" DisplayMemberPath="BrNaam" Height="100" Width="120"></ListBox>
+            </StackPanel>
         </Border>
-        <Border Height="120" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+         <Border Height="120" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="4" Height="120">
                 <Grid x:Name="gridDetail" DataContext="{StaticResource brouwerViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
@@ -75,8 +80,8 @@
             </StackPanel>
         </Border>
 
-        <Border DataContext="{StaticResource brouwerViewSource}" Background="SkyBlue" BorderBrush="Black" BorderThickness="1">
-            <DataGrid x:Name="brouwerDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="82,65,-190,4" EnableRowVirtualization="True" AutoGenerateColumns="False" SelectionChanged="brouwerDataGrid_SelectionChanged">
+        <Border DataContext="{StaticResource brouwerViewSource}" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" >
+            <DataGrid x:Name="brouwerDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" SelectionChanged="brouwerDataGrid_SelectionChanged" >
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="adresColumn" Width="SizeToHeader" Header="Adres" Binding="{Binding Adres}"/>
                     <DataGridTextColumn x:Name="brNaamColumn" Width="SizeToHeader" Header="Br Naam" Binding="{Binding BrNaam}"/>
