@@ -58,7 +58,7 @@
         
          <Border Height="160" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="4" Height="160">
-                <Grid x:Name="gridDetail" DataContext="{StaticResource brouwerViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid x:Name="gridDetail" DataContext="{StaticResource brouwerViewSource}" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewMouseDown="TestOpFouten_PreviewMouseDown">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -117,7 +117,8 @@
         </Border>
 
         <Border DataContext="{StaticResource brouwerViewSource}" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" >
-            <DataGrid x:Name="brouwerDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" SelectionChanged="brouwerDataGrid_SelectionChanged" >
+            <DataGrid x:Name="brouwerDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" ItemsSource="{Binding}" EnableRowVirtualization="True" 
+                      AutoGenerateColumns="False" SelectionChanged="brouwerDataGrid_SelectionChanged" PreviewMouseDown="TestOpFouten_PreviewMouseDown">
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="adresColumn" Width="SizeToHeader" Header="Adres" Binding="{Binding Adres}"/>
                     <DataGridTextColumn x:Name="brNaamColumn" Width="SizeToHeader" Header="Br Naam" Binding="{Binding BrNaam}"/>

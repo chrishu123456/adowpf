@@ -204,5 +204,42 @@ namespace adowpf
             brouwerDataGrid.RowValidationRules[0].ValidatesOnTargetUpdated = true;
             brouwerDataGrid.RowValidationRules[0].ValidationStep = ValidationStep.UpdatedValue;
         }
+
+        private void TestOpFouten_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            bool foutgevonden = false;
+            foreach (var c in gridDetail.Children)
+            {
+                if (c is AdornerDecorator)
+                {
+                    if (Validation.GetHasError( ( (AdornerDecorator)c).Child))
+                  {
+                        foutgevonden = true;
+                    }
+                }
+                else if (Validation.GetHasError((DependencyObject)(c) ))
+                    {
+                    foutgevonden = true;
+                }
+                
+            }
+            
+
+            foreach (var c in brouwerDataGrid.ItemsSource)
+            {
+                var d = brouwerDataGrid.ItemContainerGenerator.ContainerFromItem(c);
+                if (d is DataGridRow)
+                {
+                    if (Validation.GetHasError(d))
+                    {
+                        foutgevonden = true;
+                    }
+                }
+               
+
+            }
+            if (foutgevonden)
+            { e.Handled = true; }
+        }
     }
 }
