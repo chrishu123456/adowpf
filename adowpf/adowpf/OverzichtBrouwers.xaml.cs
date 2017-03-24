@@ -165,6 +165,44 @@ namespace adowpf
         {
             goUpdate();
         }
-        
+
+        private void CheckBoxPostcode0_Click(object sender, RoutedEventArgs e)
+        {
+            Binding binding1 = BindingOperations.GetBinding(TextBoxPostCode, TextBox.TextProperty);
+            binding1.ValidationRules.Clear();
+
+            Binding binding2 = (postCodeColumn as DataGridBoundColumn).Binding as Binding;
+            binding2.ValidationRules.Clear();
+
+            brouwerDataGrid.RowValidationRules.Clear();
+
+            switch (CheckBoxPostcode0.IsChecked)
+            {
+                case true:
+                    binding1.ValidationRules.Add(new PostCodeRangeRule0());
+                    binding2.ValidationRules.Add(new PostCodeRangeRule0());
+                    brouwerDataGrid.RowValidationRules.Add(new PostCodeRangeRule0());
+                    break;
+                case false:
+                    binding1.ValidationRules.Add(new PostCodeRangeRule());
+                    binding2.ValidationRules.Add(new PostCodeRangeRule());
+                    brouwerDataGrid.RowValidationRules.Add(new PostCodeRangeRule());
+                    break;
+                default:
+                    binding1.ValidationRules.Add(new PostCodeRangeRule());
+                    binding2.ValidationRules.Add(new PostCodeRangeRule());
+                    brouwerDataGrid.RowValidationRules.Add(new PostCodeRangeRule());
+                    break;
+            }
+
+            binding1.ValidationRules[0].ValidatesOnTargetUpdated = true;
+            binding1.ValidationRules[0].ValidationStep = ValidationStep.UpdatedValue;
+
+            binding2.ValidationRules[0].ValidatesOnTargetUpdated = true;
+            binding2.ValidationRules[0].ValidationStep = ValidationStep.UpdatedValue;
+
+            brouwerDataGrid.RowValidationRules[0].ValidatesOnTargetUpdated = true;
+            brouwerDataGrid.RowValidationRules[0].ValidationStep = ValidationStep.UpdatedValue;
+        }
     }
 }

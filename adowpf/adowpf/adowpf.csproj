@@ -63,6 +63,7 @@
       <DependentUpon>OverzichtBrouwers.xaml</DependentUpon>
     </Compile>
     <Compile Include="PostCodeRangeRule.cs" />
+    <Compile Include="PostCodeRangeRule0.cs" />
     <Compile Include="RekeningInfoRaadplegen.xaml.cs">
       <DependentUpon>RekeningInfoRaadplegen.xaml</DependentUpon>
     </Compile>
